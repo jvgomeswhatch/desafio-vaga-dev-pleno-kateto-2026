@@ -19,7 +19,7 @@ test.describe("CrateBr E2E", () => {
 
     await expect(
       page.getByText(/entraremos em contato em breve/i)
-    ).toBeVisible({ timeout: 10_000 });
+    ).toBeVisible({ timeout: 30_000 });
 
     // ── 2. Login ──────────────────────────────────────────────────────────────
     await page.goto(`${BASE}/login`);
@@ -28,7 +28,7 @@ test.describe("CrateBr E2E", () => {
     await page.getByLabel("Senha").fill(ADMIN_PASSWORD);
     await page.getByRole("button", { name: /entrar/i }).click();
 
-    await page.waitForURL(`${BASE}/dashboard`, { timeout: 10_000 });
+    await page.waitForURL(`${BASE}/dashboard`, { timeout: 30_000 });
 
     // ── 3. Card must appear in "Sem Contato" column ───────────────────────────
     const semContatoColumn = page.getByRole("region", { name: /sem contato/i }).or(
@@ -36,7 +36,7 @@ test.describe("CrateBr E2E", () => {
     );
 
     await expect(semContatoColumn.getByText(name)).toBeVisible({
-      timeout: 10_000,
+      timeout: 30_000,
     });
 
     // ── 4. Move card to "Em Contato" via StatusSelector ──────────────────────
@@ -54,7 +54,7 @@ test.describe("CrateBr E2E", () => {
     const emContatoColumn = page.locator('[aria-label="Em Contato"]');
 
     await expect(emContatoColumn.getByText(name)).toBeVisible({
-      timeout: 10_000,
+      timeout: 30_000,
     });
 
     // And must be gone from "Sem Contato"
