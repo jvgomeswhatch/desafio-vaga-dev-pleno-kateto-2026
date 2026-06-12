@@ -21,7 +21,7 @@ export function Footer() {
             fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)",
             color: "var(--color-text-muted)", letterSpacing: "var(--tracking-wide)",
           }}>
-            CRATE<span style={{ color: "var(--color-brand)" }}>//</span>BR © 2026
+            CRATE<span style={{ color: "var(--color-brand)" }}>{"//"}</span>BR © 2026
           </span>
         </div>
         <span style={{

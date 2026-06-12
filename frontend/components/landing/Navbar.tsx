@@ -27,7 +27,7 @@ export function Navbar() {
             fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
             letterSpacing: "var(--tracking-wider)", fontSize: "var(--text-base)",
           }}>
-            CRATE<span style={{ color: "var(--color-brand)" }}>//</span>BR
+            CRATE<span style={{ color: "var(--color-brand)" }}>{"//"}</span>BR
           </span>
         </div>
 

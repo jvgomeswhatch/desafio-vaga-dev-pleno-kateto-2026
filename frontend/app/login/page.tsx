@@ -72,7 +72,7 @@ export default function LoginPage() {
               fontSize: "var(--text-base)",
             }}
           >
-            CRATE<span style={{ color: "var(--color-brand)" }}>//</span>BR
+            CRATE<span style={{ color: "var(--color-brand)" }}>{"//"}</span>BR
           </span>
         </div>
 

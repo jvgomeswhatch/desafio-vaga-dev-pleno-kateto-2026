@@ -18,7 +18,7 @@ import type { Lead, LeadStatus } from "@/types";
 const COLUMNS: LeadStatus[] = ["sem_contato", "em_contato", "perdido", "finalizado"];
 
 export function KanbanBoard() {
-  const { data, isLoading, moveLead } = useKanban();
+  const { data, moveLead } = useKanban();
   const [activeId, setActiveId] = useState<number | null>(null);
   const [overId, setOverId] = useState<LeadStatus | null>(null);
 

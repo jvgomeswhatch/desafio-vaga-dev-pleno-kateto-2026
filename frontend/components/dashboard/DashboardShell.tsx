@@ -74,7 +74,7 @@ export function DashboardShell() {
                 color: "var(--color-text-primary)",
               }}
             >
-              CRATE<span style={{ color: "var(--color-brand)" }}>//</span>BR
+              CRATE<span style={{ color: "var(--color-brand)" }}>{"//"}</span>BR
             </span>
             <span
               style={{

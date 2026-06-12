@@ -13,7 +13,7 @@ export function useRequireAuth(): boolean {
       router.replace("/login");
       return;
     }
-    setAuthenticated(true);
+    setAuthenticated(true); // eslint-disable-line react-hooks/set-state-in-effect
   }, [router]);
 
   return authenticated;
