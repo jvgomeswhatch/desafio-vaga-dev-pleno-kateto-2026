@@ -1,0 +1,2727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRATE//BR — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       Single source of truth. No hardcoded values below this block.
+       ============================================================ */
+    :root {
+      /* ----- COLOR / Base surfaces ----- */
+      --color-bg-base:        #0a0e13;
+      --color-bg-elevated:    #11161d;
+      --color-bg-surface:     #1a2029;
+      --color-bg-raised:      #232b36;
+      --color-bg-overlay:     rgba(10, 14, 19, 0.88);
+
+      /* ----- COLOR / Borders ----- */
+      --color-border-subtle:  #1f2630;
+      --color-border-default: #2d3540;
+      --color-border-strong:  #3d4754;
+
+      /* ----- COLOR / Text ----- */
+      --color-text-primary:   #e6edf3;
+      --color-text-secondary: #9ba3af;
+      --color-text-muted:     #6b7280;
+      --color-text-disabled:  #4a5260;
+      --color-text-inverse:   #0a0e13;
+
+      /* ----- COLOR / Brand — StatTrak Orange ----- */
+      --color-brand:          #cf6a32;
+      --color-brand-bright:   #ff8b4d;
+      --color-brand-dim:      #8a4621;
+      --color-brand-bg:       rgba(207, 106, 50, 0.1);
+      --color-brand-glow:     rgba(207, 106, 50, 0.35);
+
+      /* ----- COLOR / Accent — Covert Knife Gold ----- */
+      --color-accent:         #e4ae39;
+      --color-accent-bg:      rgba(228, 174, 57, 0.1);
+
+      /* ----- COLOR / Rarity (official CS-inspired scale) ----- */
+      --color-rarity-consumer:    #b0c3d9;
+      --color-rarity-industrial:  #5e98d9;
+      --color-rarity-milspec:     #4b69ff;
+      --color-rarity-restricted:  #8847ff;
+      --color-rarity-classified:  #d32ce6;
+      --color-rarity-covert:      #eb4b4b;
+      --color-rarity-knife:       #e4ae39;
+
+      /* ----- COLOR / Kanban status ----- */
+      --color-status-pending: #6b7280;
+      --color-status-active:  #5e98d9;
+      --color-status-lost:    #eb4b4b;
+      --color-status-won:     #5ba24a;
+
+      /* ----- COLOR / Semantic ----- */
+      --color-success:        #5ba24a;
+      --color-warning:        #e4ae39;
+      --color-danger:         #eb4b4b;
+      --color-info:           #5e98d9;
+
+      /* ----- TYPOGRAPHY / Families ----- */
+      --font-display: 'Rajdhani', 'Oswald', sans-serif;
+      --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+      /* ----- TYPOGRAPHY / Scale (mobile-first) ----- */
+      --text-2xs:  0.625rem;   /* 10px */
+      --text-xs:   0.75rem;    /* 12px */
+      --text-sm:   0.875rem;   /* 14px */
+      --text-base: 1rem;       /* 16px */
+      --text-lg:   1.125rem;   /* 18px */
+      --text-xl:   1.375rem;   /* 22px */
+      --text-2xl:  1.75rem;    /* 28px */
+      --text-3xl:  2.25rem;    /* 36px */
+      --text-4xl:  3rem;       /* 48px */
+      --text-5xl:  4rem;       /* 64px */
+
+      /* ----- TYPOGRAPHY / Weight ----- */
+      --weight-regular:  400;
+      --weight-medium:   500;
+      --weight-semibold: 600;
+      --weight-bold:     700;
+
+      /* ----- TYPOGRAPHY / Tracking ----- */
+      --tracking-tight:   -0.02em;
+      --tracking-normal:  0;
+      --tracking-wide:    0.05em;
+      --tracking-wider:   0.1em;
+      --tracking-widest:  0.2em;
+
+      /* ----- TYPOGRAPHY / Line height ----- */
+      --leading-tight: 1.1;
+      --leading-snug:  1.3;
+      --leading-base:  1.5;
+      --leading-relaxed: 1.7;
+
+      /* ----- SPACING (4px base) ----- */
+      --space-0:  0;
+      --space-1:  0.25rem;   /* 4px  */
+      --space-2:  0.5rem;    /* 8px  */
+      --space-3:  0.75rem;   /* 12px */
+      --space-4:  1rem;      /* 16px */
+      --space-5:  1.5rem;    /* 24px */
+      --space-6:  2rem;      /* 32px */
+      --space-7:  3rem;      /* 48px */
+      --space-8:  4rem;      /* 64px */
+      --space-9:  6rem;      /* 96px */
+
+      /* ----- RADIUS (kept sharp — CS aesthetic) ----- */
+      --radius-none: 0;
+      --radius-sm:   2px;
+      --radius-md:   4px;
+      --radius-lg:   6px;
+      --radius-pill: 999px;
+
+      /* ----- SHADOWS ----- */
+      --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.4);
+      --shadow-md:   0 4px 12px rgba(0, 0, 0, 0.5);
+      --shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.6);
+      --shadow-glow: 0 0 24px var(--color-brand-glow);
+
+      /* ----- MOTION ----- */
+      --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+      --duration-fast: 120ms;
+      --duration-base: 200ms;
+      --duration-slow: 400ms;
+
+      /* ----- Z-INDEX (semantic scale) ----- */
+      --z-base:     1;
+      --z-dropdown: 10;
+      --z-sticky:   20;
+      --z-overlay:  30;
+      --z-modal:    40;
+      --z-toast:    50;
+    }
+
+    /* Scale type up at larger viewports */
+    @media (min-width: 768px) {
+      :root {
+        --text-3xl: 3rem;
+        --text-4xl: 4rem;
+        --text-5xl: 5.5rem;
+      }
+    }
+
+    /* ============================================================
+       RESET / BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--color-bg-base);
+      color: var(--color-text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-base);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); font-weight: var(--weight-semibold); line-height: var(--leading-tight); }
+    p { margin: 0; }
+    button { font-family: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    ::selection { background: var(--color-brand); color: var(--color-text-inverse); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* Background ambient — subtle hex grid + scanlines */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       LAYOUT — Documentation shell
+       ============================================================ */
+    .ds-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+    @media (min-width: 1024px) {
+      .ds-shell { grid-template-columns: 240px 1fr; }
+    }
+
+    .ds-nav {
+      position: sticky; top: 0;
+      background: var(--color-bg-elevated);
+      border-bottom: 1px solid var(--color-border-default);
+      padding: var(--space-4);
+      z-index: var(--z-sticky);
+    }
+    @media (min-width: 1024px) {
+      .ds-nav {
+        height: 100vh;
+        border-bottom: none;
+        border-right: 1px solid var(--color-border-default);
+        padding: var(--space-6) var(--space-5);
+        overflow-y: auto;
+      }
+    }
+    .ds-nav__brand {
+      display: flex; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+    .ds-nav__logo {
+      width: 36px; height: 36px;
+      background: var(--color-brand);
+      color: var(--color-text-inverse);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-lg);
+      letter-spacing: var(--tracking-wider);
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+    }
+    .ds-nav__title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wider);
+    }
+    .ds-nav__title span { color: var(--color-brand); }
+    .ds-nav__group { margin-bottom: var(--space-5); display: none; }
+    @media (min-width: 1024px) { .ds-nav__group { display: block; } }
+    .ds-nav__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+    .ds-nav__link {
+      display: block;
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      border-left: 2px solid transparent;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+    .ds-nav__link:hover {
+      color: var(--color-text-primary);
+      border-left-color: var(--color-brand);
+      background: var(--color-brand-bg);
+    }
+
+    .ds-main {
+      padding: var(--space-6) var(--space-4);
+      max-width: 1200px;
+      min-width: 0;
+      overflow-x: hidden;
+    }
+    @media (min-width: 768px) { .ds-main { padding: var(--space-7) var(--space-6); } }
+
+    .ds-section { padding: var(--space-7) 0; border-bottom: 1px solid var(--color-border-subtle); }
+    .ds-section:first-child { padding-top: var(--space-5); }
+    .ds-section__eyebrow {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-brand);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-3);
+    }
+    .ds-section__eyebrow::before {
+      content: ""; width: 24px; height: 1px; background: var(--color-brand);
+    }
+    .ds-section__title {
+      font-size: var(--text-3xl);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-3);
+    }
+    .ds-section__lead {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      max-width: 60ch;
+      line-height: var(--leading-snug);
+      margin-bottom: var(--space-6);
+    }
+    .ds-h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      margin: var(--space-6) 0 var(--space-4);
+      display: flex; align-items: center; gap: var(--space-3);
+    }
+    .ds-h3::before {
+      content: "❰"; color: var(--color-brand); font-family: var(--font-mono); font-size: var(--text-base);
+    }
+    .ds-h3::after {
+      content: "❱"; color: var(--color-brand); font-family: var(--font-mono); font-size: var(--text-base);
+    }
+
+    /* ============================================================
+       SIGNATURE — Float Meter
+       The wear-condition bar carried throughout. Identity element.
+       ============================================================ */
+    .float-meter {
+      width: 100%;
+      height: 4px;
+      background:
+        linear-gradient(90deg,
+          var(--color-success) 0%,
+          var(--color-success) 7%,
+          var(--color-info) 7%,
+          var(--color-info) 15%,
+          var(--color-accent) 15%,
+          var(--color-accent) 38%,
+          var(--color-brand) 38%,
+          var(--color-brand) 45%,
+          var(--color-danger) 45%,
+          var(--color-danger) 100%
+        );
+      position: relative;
+      border-radius: var(--radius-sm);
+    }
+    .float-meter__pointer {
+      position: absolute;
+      top: -3px;
+      width: 2px; height: 10px;
+      background: var(--color-text-primary);
+      box-shadow: 0 0 4px rgba(0,0,0,0.8);
+      transform: translateX(-1px);
+    }
+    .float-meter__value {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wide);
+      margin-top: var(--space-2);
+    }
+    .float-meter__value strong {
+      color: var(--color-text-primary);
+      font-weight: var(--weight-medium);
+    }
+
+    /* ============================================================
+       TOKEN DOCS (used only in this design-system page)
+       ============================================================ */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: var(--space-3);
+    }
+    .token-swatch {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .token-swatch__sample { height: 64px; }
+    .token-swatch__body {
+      padding: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+    }
+    .token-swatch__name {
+      color: var(--color-text-primary);
+      letter-spacing: var(--tracking-wide);
+    }
+    .token-swatch__hex {
+      color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+    .token-row {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .token-row__sample {
+      width: 48px; flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-brand);
+    }
+    .token-row__demo { flex: 1; }
+    .token-row__name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* ============================================================
+       BUTTON COMPONENT
+       ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--duration-base) var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn--primary {
+      background: var(--color-brand);
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn--primary:hover {
+      background: var(--color-brand-bright);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-1px);
+    }
+    .btn--secondary {
+      background: transparent;
+      color: var(--color-text-primary);
+      border-color: var(--color-border-strong);
+    }
+    .btn--secondary:hover {
+      border-color: var(--color-brand);
+      color: var(--color-brand);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-text-secondary);
+    }
+    .btn--ghost:hover {
+      color: var(--color-text-primary);
+      background: var(--color-bg-surface);
+    }
+    .btn--danger {
+      background: var(--color-danger);
+      color: var(--color-text-inverse);
+    }
+    .btn--lg { padding: var(--space-4) var(--space-6); font-size: var(--text-base); }
+    .btn--sm { padding: var(--space-2) var(--space-3); font-size: var(--text-xs); }
+    .btn--block { width: 100%; }
+    .btn:focus-visible {
+      outline: 2px solid var(--color-brand-bright);
+      outline-offset: 2px;
+    }
+
+    /* ============================================================
+       INPUT COMPONENT
+       ============================================================ */
+    .field { display: flex; flex-direction: column; gap: var(--space-2); }
+    .field__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+    .field__label span { color: var(--color-brand); }
+    .field__input,
+    .field__select,
+    .field__textarea {
+      width: 100%;
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+    .field__input::placeholder { color: var(--color-text-muted); }
+    .field__input:focus,
+    .field__select:focus,
+    .field__textarea:focus {
+      outline: none;
+      border-color: var(--color-brand);
+      background: var(--color-bg-surface);
+      box-shadow: 0 0 0 3px var(--color-brand-bg);
+    }
+    .field__hint {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wide);
+    }
+    .field__hint--error { color: var(--color-danger); }
+
+    /* ============================================================
+       BADGE COMPONENT
+       ============================================================ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      background: var(--color-bg-surface);
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border-default);
+    }
+    .badge--brand   { background: var(--color-brand-bg);    color: var(--color-brand);    border-color: var(--color-brand-dim); }
+    .badge--success { background: rgba(91,162,74,0.12);     color: var(--color-success);  border-color: rgba(91,162,74,0.3); }
+    .badge--warning { background: var(--color-accent-bg);   color: var(--color-accent);   border-color: rgba(228,174,57,0.3); }
+    .badge--danger  { background: rgba(235,75,75,0.12);     color: var(--color-danger);   border-color: rgba(235,75,75,0.3); }
+    .badge--info    { background: rgba(94,152,217,0.12);    color: var(--color-info);     border-color: rgba(94,152,217,0.3); }
+    .badge--rarity-milspec    { background: rgba(75,105,255,0.12);  color: var(--color-rarity-milspec);    border-color: rgba(75,105,255,0.3); }
+    .badge--rarity-restricted { background: rgba(136,71,255,0.12);  color: var(--color-rarity-restricted); border-color: rgba(136,71,255,0.3); }
+    .badge--rarity-classified { background: rgba(211,44,230,0.12);  color: var(--color-rarity-classified); border-color: rgba(211,44,230,0.3); }
+    .badge--rarity-covert     { background: rgba(235,75,75,0.12);   color: var(--color-rarity-covert);     border-color: rgba(235,75,75,0.3); }
+    .badge--rarity-knife      { background: rgba(228,174,57,0.12);  color: var(--color-rarity-knife);      border-color: rgba(228,174,57,0.3); }
+
+    .badge--stattrak {
+      background: var(--color-brand);
+      color: var(--color-text-inverse);
+      border-color: var(--color-brand-bright);
+    }
+    .badge--stattrak::before {
+      content: "ST™"; font-weight: var(--weight-bold);
+    }
+
+    /* ============================================================
+       SKIN CARD COMPONENT — the signature card
+       ============================================================ */
+    .skin-card {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-left: 3px solid var(--rarity, var(--color-rarity-milspec));
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+      transition: all var(--duration-base) var(--ease-out);
+      display: flex; flex-direction: column;
+    }
+    .skin-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--rarity, var(--color-rarity-milspec));
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px var(--rarity);
+    }
+    .skin-card__visual {
+      aspect-ratio: 16 / 10;
+      position: relative;
+      overflow: hidden;
+      container-type: inline-size;
+      background-color: var(--pattern-base, #1a1a1a);
+      background-image:
+        repeating-linear-gradient(118deg, transparent 0, transparent 22px, rgba(255,255,255,0.04) 22px, rgba(255,255,255,0.04) 23px),
+        repeating-linear-gradient(72deg, transparent 0, transparent 14px, rgba(0,0,0,0.18) 14px, rgba(0,0,0,0.18) 15px),
+        linear-gradient(135deg, var(--pattern-from, #444) 0%, var(--pattern-via, #222) 55%, var(--pattern-to, #0a0a0a) 100%);
+      display: grid; place-items: center;
+    }
+    .skin-card__visual::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.10), transparent 55%),
+        radial-gradient(ellipse at 70% 100%, rgba(0,0,0,0.4), transparent 60%);
+      pointer-events: none;
+    }
+    .skin-card__visual-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 13cqi, 2.5rem);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-tight);
+      color: rgba(255, 255, 255, 0.94);
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 0.9;
+      padding: var(--space-4) var(--space-2);
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.55));
+      mix-blend-mode: screen;
+      z-index: 1;
+      position: relative;
+      max-width: 100%;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+    .skin-card__visual-name small {
+      display: block;
+      font-size: 0.4em;
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: rgba(255, 255, 255, 0.55);
+      margin-bottom: var(--space-2);
+      mix-blend-mode: normal;
+    }
+    .skin-card__position {
+      position: absolute;
+      bottom: var(--space-2);
+      left: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: var(--tracking-wider);
+      z-index: 2;
+      display: none;
+    }
+    @media (max-width: 639px) {
+      .vitrine .skin-card__position { display: block; }
+    }
+    .skin-card__corner {
+      position: absolute;
+      top: var(--space-2); right: var(--space-2);
+      display: flex; gap: var(--space-1);
+      z-index: 2;
+    }
+    .skin-card__corner--left {
+      position: absolute;
+      top: var(--space-2); left: var(--space-2);
+      z-index: 2;
+    }
+    .skin-card__corner .badge,
+    .skin-card__corner--left .badge {
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      background-color: rgba(10, 14, 19, 0.72);
+    }
+    .skin-card__corner .badge--stattrak {
+      background-color: var(--color-brand);
+    }
+    .skin-card__body {
+      padding: var(--space-4);
+      display: flex; flex-direction: column; gap: var(--space-3);
+    }
+    .skin-card__weapon {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+    }
+    .skin-card__name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-text-primary);
+      line-height: var(--leading-tight);
+    }
+    .skin-card__footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border-subtle);
+    }
+    .skin-card__price {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-brand);
+      letter-spacing: var(--tracking-tight);
+    }
+    .skin-card__price small {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wide);
+      margin-right: var(--space-1);
+    }
+
+    /* ============================================================
+       KILLFEED — borrowed from the in-game HUD. Used as an eyebrow,
+       a notification, a section divider. Recurrent identity device.
+       ============================================================ */
+    .killfeed {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: rgba(0, 0, 0, 0.55);
+      border-left: 2px solid var(--color-brand);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      white-space: nowrap;
+      max-width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .killfeed::-webkit-scrollbar { display: none; }
+    .killfeed__tag {
+      color: var(--color-brand);
+      font-weight: var(--weight-bold);
+    }
+    .killfeed__tag--ct      { color: var(--color-info); }
+    .killfeed__tag--success { color: var(--color-success); }
+    .killfeed__name {
+      color: var(--color-text-primary);
+      font-weight: var(--weight-medium);
+    }
+    .killfeed__name--victim {
+      color: var(--color-text-muted);
+      text-decoration: line-through;
+      text-decoration-color: var(--color-danger);
+      text-decoration-thickness: 1px;
+    }
+    .killfeed__weapon {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      color: var(--color-brand);
+    }
+    .killfeed__weapon svg { width: 22px; height: 10px; }
+    .killfeed__sep { color: var(--color-text-disabled); }
+
+    /* ============================================================
+       SCOREBOARD — HUD-style match stats. Sells as serious gameplay,
+       reads as readable KPI.
+       ============================================================ */
+    .scoreboard {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .scoreboard__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2) var(--space-4);
+      min-width: 64px;
+      position: relative;
+    }
+    .scoreboard__stat + .scoreboard__stat::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: var(--color-border-default);
+    }
+    .scoreboard__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+    }
+    .scoreboard__value {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-tight);
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .scoreboard__stat--kills   .scoreboard__value { color: var(--color-success); }
+    .scoreboard__stat--assists .scoreboard__value { color: var(--color-info); }
+    .scoreboard__stat--deaths  .scoreboard__value { color: var(--color-danger); }
+    .scoreboard__stat--neutral .scoreboard__value { color: var(--color-text-primary); }
+
+    /* ============================================================
+       SKIN VISUAL — pattern-driven. Drops the cartoon weapon
+       silhouette in favor of an abstract pattern sample with
+       the skin name set as type-as-image.
+       ============================================================ */
+    .skin-visual {
+      aspect-ratio: 16 / 10;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--pattern-base, #1a1a1a);
+      background-image:
+        /* fine scratches */
+        repeating-linear-gradient(118deg, transparent 0, transparent 22px, rgba(255,255,255,0.04) 22px, rgba(255,255,255,0.04) 23px),
+        /* coarser wear streaks */
+        repeating-linear-gradient(72deg, transparent 0, transparent 14px, rgba(0,0,0,0.18) 14px, rgba(0,0,0,0.18) 15px),
+        /* the pattern itself */
+        linear-gradient(135deg, var(--pattern-from, #444) 0%, var(--pattern-via, #222) 55%, var(--pattern-to, #0a0a0a) 100%);
+      display: grid;
+      place-items: center;
+    }
+    .skin-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.12), transparent 50%),
+        radial-gradient(ellipse at 70% 100%, rgba(0,0,0,0.45), transparent 60%);
+      pointer-events: none;
+    }
+    .skin-visual__name {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 7vw, 3.25rem);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-tight);
+      color: rgba(255, 255, 255, 0.92);
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 0.85;
+      padding: 0 var(--space-4);
+      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.6));
+      z-index: 1;
+      position: relative;
+      mix-blend-mode: screen;
+    }
+    .skin-visual__name small {
+      display: block;
+      font-size: 0.42em;
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: var(--space-2);
+      mix-blend-mode: normal;
+    }
+    .skin-visual__position {
+      position: absolute;
+      bottom: var(--space-2);
+      left: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: var(--tracking-wider);
+      z-index: 2;
+      display: none;
+    }
+    .skin-card__sticker-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      padding-top: var(--space-2);
+      border-top: 1px dashed var(--color-border-subtle);
+    }
+    .skin-card__sticker-row__pattern {
+      color: var(--color-accent);
+    }
+    .skin-card__sticker {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      background: rgba(228, 174, 57, 0.08);
+      border: 1px solid rgba(228, 174, 57, 0.25);
+      border-radius: var(--radius-sm);
+      color: var(--color-accent);
+      margin-left: auto;
+    }
+    .skin-card__sticker::before { content: "✦"; }
+
+    /* ============================================================
+       VITRINE MOBILE — case-opening scroll. Below sm, the grid
+       turns into a horizontal snap carousel with cards at ~85vw.
+       ============================================================ */
+    @media (max-width: 639px) {
+      .vitrine {
+        display: flex !important;
+        grid-template-columns: none !important;
+        gap: var(--space-3);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--space-1);
+        padding: var(--space-2) 0 var(--space-5);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        max-width: 100% !important;
+      }
+      .vitrine::-webkit-scrollbar { display: none; }
+      .vitrine > .skin-card {
+        flex: 0 0 88%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        min-width: 0;
+      }
+      .vitrine > .skin-card:last-child {
+        margin-right: var(--space-4);
+      }
+      .vitrine .skin-card__position { display: block; }
+    }
+
+    /* Drag hint above mobile vitrine */
+    .vitrine-hint {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      padding: 0 var(--space-1);
+      margin-bottom: var(--space-2);
+    }
+    .vitrine-hint::after {
+      content: "◄ arraste ►";
+      color: var(--color-brand);
+    }
+    @media (max-width: 639px) {
+      .vitrine-hint { display: flex; }
+    }
+
+    /* ============================================================
+       KANBAN COMPONENTS
+       ============================================================ */
+    .kanban {
+      display: flex;
+      gap: var(--space-4);
+      overflow-x: auto;
+      padding-bottom: var(--space-4);
+      scroll-snap-type: x mandatory;
+    }
+    .kanban-column {
+      flex: 0 0 280px;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-top: 3px solid var(--column-color, var(--color-status-pending));
+      border-radius: var(--radius-sm);
+      display: flex; flex-direction: column;
+      max-height: 600px;
+      scroll-snap-align: start;
+    }
+    @media (min-width: 1024px) {
+      .kanban { display: grid; grid-template-columns: repeat(4, 1fr); }
+      .kanban-column { flex: 1; }
+    }
+    .kanban-column__header {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .kanban-column__title {
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .kanban-column__title::before {
+      content: ""; width: 6px; height: 6px;
+      background: var(--column-color);
+      border-radius: 50%;
+    }
+    .kanban-column__count {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      padding: var(--space-1) var(--space-2);
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-sm);
+    }
+    .kanban-column__body {
+      padding: var(--space-3);
+      display: flex; flex-direction: column; gap: var(--space-3);
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .lead-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3);
+      cursor: grab;
+      transition: all var(--duration-fast) var(--ease-out);
+      position: relative;
+    }
+    .lead-card:hover {
+      border-color: var(--color-brand);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .lead-card__head {
+      display: flex; align-items: start; justify-content: space-between;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+    .lead-card__name {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide);
+      line-height: var(--leading-tight);
+    }
+    .lead-card__skin {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-2);
+      display: flex; align-items: center; gap: var(--space-1);
+    }
+    .lead-card__skin::before { content: "▸"; color: var(--color-brand); }
+    .lead-card__phone {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .lead-card__phone-icon {
+      width: 12px; height: 12px;
+      color: var(--color-success);
+    }
+    .lead-card__footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border-subtle);
+    }
+    .lead-card__seller {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-secondary);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .avatar {
+      width: 20px; height: 20px;
+      background: var(--color-bg-raised);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-pill);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-size: var(--text-2xs);
+      font-weight: var(--weight-bold);
+      color: var(--color-brand);
+    }
+    .avatar--md { width: 32px; height: 32px; font-size: var(--text-xs); }
+    .avatar--lg { width: 48px; height: 48px; font-size: var(--text-sm); }
+    .lead-card__time {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+    }
+
+    /* ============================================================
+       SAMPLE PAGES — LANDING / LOGIN / KANBAN
+       ============================================================ */
+    .stage {
+      background: var(--color-bg-base);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: var(--space-4);
+    }
+    .stage__bar {
+      background: var(--color-bg-elevated);
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--color-border-default);
+      display: flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+    .stage__bar::before {
+      content: ""; width: 8px; height: 8px;
+      background: var(--color-brand); border-radius: 50%;
+    }
+    .stage__body { padding: var(--space-4); }
+    @media (min-width: 768px) { .stage__body { padding: var(--space-6); } }
+
+    /* LANDING — Header */
+    .landing-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: var(--space-5);
+      border-bottom: 1px solid var(--color-border-subtle);
+      margin-bottom: var(--space-6);
+    }
+    .landing-header__brand { display: flex; align-items: center; gap: var(--space-3); }
+    .landing-header__brand-logo {
+      width: 32px; height: 32px;
+      background: var(--color-brand); color: var(--color-text-inverse);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+    }
+    .landing-header__brand-text {
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wider);
+    }
+    .landing-header__brand-text span { color: var(--color-brand); }
+    .landing-header__nav { display: none; gap: var(--space-5); }
+    @media (min-width: 768px) { .landing-header__nav { display: flex; } }
+    .landing-header__nav a {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+    .landing-header__nav a:hover { color: var(--color-brand); }
+
+    /* LANDING — Hero */
+    .hero {
+      padding: var(--space-6) 0 var(--space-7);
+      position: relative;
+    }
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-brand);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+    .hero__eyebrow::before, .hero__eyebrow::after {
+      content: ""; width: 24px; height: 1px; background: var(--color-brand);
+    }
+    .hero__title {
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-tight);
+      line-height: 0.95;
+      margin-bottom: var(--space-4);
+      text-transform: uppercase;
+    }
+    .hero__title-accent { color: var(--color-brand); }
+    .hero__lead {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      max-width: 50ch;
+      line-height: var(--leading-snug);
+      margin-bottom: var(--space-5);
+    }
+    .hero__actions {
+      display: flex; flex-wrap: wrap; gap: var(--space-3);
+      margin-bottom: var(--space-6);
+    }
+    .hero__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-border-subtle);
+    }
+    .hero__stat-value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-text-primary);
+      letter-spacing: var(--tracking-tight);
+    }
+    .hero__stat-value sup {
+      font-size: var(--text-base); color: var(--color-brand);
+    }
+    .hero__stat-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-top: var(--space-1);
+    }
+
+    /* LANDING — Vitrine */
+    .vitrine {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+    @media (min-width: 640px) { .vitrine { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .vitrine { grid-template-columns: repeat(3, 1fr); } }
+
+    /* LANDING — Filters */
+    .filters {
+      display: flex; gap: var(--space-2); flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .filter-chip {
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+    .filter-chip:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+    .filter-chip--active { background: var(--color-brand); color: var(--color-text-inverse); border-color: var(--color-brand); }
+
+    /* LANDING — Form section */
+    .form-block {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-block::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--color-brand), var(--color-accent), var(--color-brand));
+    }
+    @media (min-width: 768px) { .form-block { padding: var(--space-6); } }
+    .form-block__head {
+      margin-bottom: var(--space-5);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .form-block__eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-brand);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+    .form-block__title {
+      font-size: var(--text-2xl);
+      letter-spacing: var(--tracking-tight);
+      text-transform: uppercase;
+    }
+    .form-block__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    /* LOGIN screen */
+    .login {
+      min-height: 480px;
+      display: grid; place-items: center;
+      padding: var(--space-6);
+      background:
+        radial-gradient(ellipse at top, var(--color-brand-bg), transparent 50%),
+        var(--color-bg-base);
+    }
+    .login__card {
+      width: 100%; max-width: 380px;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      position: relative;
+    }
+    .login__card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--color-brand);
+    }
+    .login__brand {
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-5);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .login__logo {
+      width: 48px; height: 48px;
+      background: var(--color-brand); color: var(--color-text-inverse);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-xl);
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+    }
+    .login__title {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+    .login__subtitle {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .login__form { display: flex; flex-direction: column; gap: var(--space-4); }
+
+    /* KANBAN screen */
+    .kanban-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--space-3);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+      margin-bottom: var(--space-5);
+    }
+    .kanban-header__title {
+      font-size: var(--text-2xl);
+      letter-spacing: var(--tracking-tight);
+      text-transform: uppercase;
+    }
+    .kanban-header__title small {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: var(--space-1);
+    }
+    .kanban-header__meta {
+      display: flex; align-items: center; gap: var(--space-3);
+    }
+    .seller-stack {
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+    }
+    .seller-stack__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+    }
+    .seller-stack__avatars {
+      display: flex;
+    }
+    .seller-stack__avatars .avatar {
+      margin-left: -6px;
+      border: 1px solid var(--color-bg-elevated);
+    }
+    .seller-stack__avatars .avatar:first-child {
+      margin-left: 0;
+      border-color: var(--color-brand);
+      color: var(--color-brand);
+    }
+
+    /* ============================================================
+       ARCHITECTURE DIAGRAM (text/code-style)
+       ============================================================ */
+    .arch-tree {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      line-height: var(--leading-relaxed);
+      color: var(--color-text-secondary);
+      overflow-x: auto;
+    }
+    .arch-tree .dir   { color: var(--color-brand); }
+    .arch-tree .file  { color: var(--color-text-primary); }
+    .arch-tree .note  { color: var(--color-text-muted); }
+
+    /* Notes / callouts */
+    .note-callout {
+      background: var(--color-brand-bg);
+      border-left: 3px solid var(--color-brand);
+      padding: var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-snug);
+    }
+    .note-callout strong { color: var(--color-brand); }
+
+    /* Code chip inline */
+    code, .code-chip {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      background: var(--color-bg-elevated);
+      color: var(--color-brand-bright);
+      padding: 0.1em 0.4em;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    /* Helper grids for component showcase */
+    .demo-row {
+      display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center;
+      padding: var(--space-4);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-3);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--space-3);
+    }
+    .demo-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+
+    /* Type specimen rows */
+    .type-row {
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: var(--space-4);
+      align-items: baseline;
+    }
+    .type-row__token {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-brand);
+      letter-spacing: var(--tracking-wide);
+    }
+    .type-row__sample { color: var(--color-text-primary); }
+
+    /* Footer */
+    .ds-footer {
+      padding: var(--space-6) 0 var(--space-7);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wide);
+      text-align: center;
+    }
+    .ds-footer span { color: var(--color-brand); }
+  </style>
+</head>
+<body>
+
+<!-- =========================================================
+     SHELL
+     ========================================================= -->
+<div class="ds-shell">
+
+  <!-- ===== Sidebar nav ===== -->
+  <aside class="ds-nav">
+    <div class="ds-nav__brand">
+      <div class="ds-nav__logo">C</div>
+      <div>
+        <div class="ds-nav__title">CRATE<span>//</span>BR</div>
+        <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);letter-spacing:var(--tracking-wider);text-transform:uppercase;">Design&nbsp;System&nbsp;v1.0</div>
+      </div>
+    </div>
+
+    <div class="ds-nav__group">
+      <div class="ds-nav__label">Fundamentos</div>
+      <a class="ds-nav__link" href="#intro">Introdução</a>
+      <a class="ds-nav__link" href="#colors">Cores</a>
+      <a class="ds-nav__link" href="#typography">Tipografia</a>
+      <a class="ds-nav__link" href="#spacing">Espaçamento</a>
+      <a class="ds-nav__link" href="#radius-shadow">Bordas & Sombras</a>
+    </div>
+    <div class="ds-nav__group">
+      <div class="ds-nav__label">Componentes</div>
+      <a class="ds-nav__link" href="#c-buttons">Buttons</a>
+      <a class="ds-nav__link" href="#c-inputs">Inputs</a>
+      <a class="ds-nav__link" href="#c-badges">Badges</a>
+      <a class="ds-nav__link" href="#c-floatmeter">Float Meter</a>
+      <a class="ds-nav__link" href="#c-killfeed">Killfeed</a>
+      <a class="ds-nav__link" href="#c-scoreboard">Scoreboard</a>
+      <a class="ds-nav__link" href="#c-skincard">Skin Card</a>
+      <a class="ds-nav__link" href="#c-leadcard">Lead Card</a>
+    </div>
+    <div class="ds-nav__group">
+      <div class="ds-nav__label">Páginas</div>
+      <a class="ds-nav__link" href="#page-landing">Landing</a>
+      <a class="ds-nav__link" href="#page-login">Login</a>
+      <a class="ds-nav__link" href="#page-kanban">Kanban</a>
+    </div>
+    <div class="ds-nav__group">
+      <div class="ds-nav__label">Engenharia</div>
+      <a class="ds-nav__link" href="#architecture">Arquitetura</a>
+      <a class="ds-nav__link" href="#conventions">Convenções</a>
+    </div>
+  </aside>
+
+  <!-- ===== Main content ===== -->
+  <main class="ds-main">
+
+    <!-- ====================================================
+         INTRO
+         ==================================================== -->
+    <section class="ds-section" id="intro">
+      <div class="ds-section__eyebrow">v1.0 / FOUNDATION</div>
+      <h1 class="ds-section__title">
+        Design System para vender skins<br>como quem vende uma <span style="color:var(--color-brand);">Karambit Doppler</span>.
+      </h1>
+      <p class="ds-section__lead">
+        CRATE//BR é a vitrine brasileira de skins de Counter-Strike. Este documento é a fonte única
+        de tokens, componentes e padrões para o produto inteiro — landing pública, autenticação e
+        CRM interno de leads.
+      </p>
+
+      <div class="demo-grid" style="margin-top:var(--space-5)">
+        <div style="padding:var(--space-4);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-brand);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--space-2);">01 / Identidade</div>
+          <h3 style="font-size:var(--text-lg);font-family:var(--font-display);letter-spacing:var(--tracking-wide);margin-bottom:var(--space-2);">HUD-first</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-snug);">Estética de inventário Steam + HUD de jogo. Brackets, separadores <code>//</code>, dados em mono e a borda lateral de raridade como marca visual.</p>
+        </div>
+        <div style="padding:var(--space-4);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-brand);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--space-2);">02 / Paleta</div>
+          <h3 style="font-size:var(--text-lg);font-family:var(--font-display);letter-spacing:var(--tracking-wide);margin-bottom:var(--space-2);">StatTrak Orange</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-snug);"><code>#cf6a32</code> como cor de marca — específica do universo CS, não o verde ácido genérico. Raridades oficiais como sistema de cor.</p>
+        </div>
+        <div style="padding:var(--space-4);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-brand);letter-spacing:var(--tracking-widest);text-transform:uppercase;margin-bottom:var(--space-2);">03 / Signature</div>
+          <h3 style="font-size:var(--text-lg);font-family:var(--font-display);letter-spacing:var(--tracking-wide);margin-bottom:var(--space-2);">Float Meter</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-snug);">A barra de wear (0.00 → 1.00) é o elemento visual recorrente. Aparece em cards de skin, indicadores de raridade e progressões.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         COLORS
+         ==================================================== -->
+    <section class="ds-section" id="colors">
+      <div class="ds-section__eyebrow">FOUNDATION / COLOR</div>
+      <h2 class="ds-section__title">Cores</h2>
+      <p class="ds-section__lead">
+        Toda cor é um token. Nunca use hex direto em componentes — sempre <code>var(--color-*)</code>.
+        Mudanças de paleta acontecem em um único lugar.
+      </p>
+
+      <h3 class="ds-h3">Surfaces</h3>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-bg-base)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">bg-base</div><div class="token-swatch__hex">#0a0e13</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-bg-elevated)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">bg-elevated</div><div class="token-swatch__hex">#11161d</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-bg-surface)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">bg-surface</div><div class="token-swatch__hex">#1a2029</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-bg-raised)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">bg-raised</div><div class="token-swatch__hex">#232b36</div></div>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">Brand & Accent</h3>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-brand)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">brand</div><div class="token-swatch__hex">#cf6a32 · StatTrak</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-brand-bright)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">brand-bright</div><div class="token-swatch__hex">#ff8b4d · hover</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-brand-dim)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">brand-dim</div><div class="token-swatch__hex">#8a4621</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-accent)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">accent</div><div class="token-swatch__hex">#e4ae39 · gold</div></div>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">Rarity Scale</h3>
+      <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-4);">Espelha a hierarquia oficial do CS. Usada em badges, bordas laterais de cards e indicadores.</p>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-consumer)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">consumer</div><div class="token-swatch__hex">#b0c3d9</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-industrial)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">industrial</div><div class="token-swatch__hex">#5e98d9</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-milspec)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">milspec</div><div class="token-swatch__hex">#4b69ff</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-restricted)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">restricted</div><div class="token-swatch__hex">#8847ff</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-classified)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">classified</div><div class="token-swatch__hex">#d32ce6</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-covert)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">covert</div><div class="token-swatch__hex">#eb4b4b</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-rarity-knife)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">knife</div><div class="token-swatch__hex">#e4ae39</div></div>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">Kanban Status</h3>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-status-pending)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">status-pending</div><div class="token-swatch__hex">Sem Contato</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-status-active)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">status-active</div><div class="token-swatch__hex">Em Contato</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-status-lost)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">status-lost</div><div class="token-swatch__hex">Perdido</div></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-swatch__sample" style="background:var(--color-status-won)"></div>
+          <div class="token-swatch__body"><div class="token-swatch__name">status-won</div><div class="token-swatch__hex">Finalizado</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         TYPOGRAPHY
+         ==================================================== -->
+    <section class="ds-section" id="typography">
+      <div class="ds-section__eyebrow">FOUNDATION / TYPE</div>
+      <h2 class="ds-section__title">Tipografia</h2>
+      <p class="ds-section__lead">
+        Três famílias, três funções claras. Rajdhani para presença, Inter para leitura,
+        JetBrains Mono para dados técnicos.
+      </p>
+
+      <div class="demo-grid">
+        <div style="padding:var(--space-5);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+          <div class="demo-label">font-display · Rajdhani</div>
+          <div style="font-family:var(--font-display);font-size:var(--text-3xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);">HEADSHOT.</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);margin-top:var(--space-2);">títulos · botões · labels de HUD</div>
+        </div>
+        <div style="padding:var(--space-5);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+          <div class="demo-label">font-body · Inter</div>
+          <div style="font-family:var(--font-body);font-size:var(--text-xl);">Texto corrido sem fricção.</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);margin-top:var(--space-2);">parágrafos · descrições · forms</div>
+        </div>
+        <div style="padding:var(--space-5);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+          <div class="demo-label">font-mono · JetBrains Mono</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-xl);color:var(--color-brand);">0.0089&nbsp;FN</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);margin-top:var(--space-2);">floats · ids · timestamps · code</div>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">Type Scale</h3>
+      <div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+        <div class="type-row">
+          <div class="type-row__token">text-5xl<br><span style="color:var(--color-text-muted);">64/88</span></div>
+          <div class="type-row__sample" style="font-family:var(--font-display);font-size:var(--text-5xl);font-weight:var(--weight-bold);letter-spacing:var(--tracking-tight);line-height:1;">CRATE//BR</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-4xl<br><span style="color:var(--color-text-muted);">48/64</span></div>
+          <div class="type-row__sample" style="font-family:var(--font-display);font-size:var(--text-4xl);font-weight:var(--weight-bold);">Skins raras, preços justos.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-3xl<br><span style="color:var(--color-text-muted);">36/48</span></div>
+          <div class="type-row__sample" style="font-family:var(--font-display);font-size:var(--text-3xl);font-weight:var(--weight-semibold);">Heading de seção</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-xl<br><span style="color:var(--color-text-muted);">22/28</span></div>
+          <div class="type-row__sample" style="font-family:var(--font-display);font-size:var(--text-xl);">Subtítulo / título de card</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-lg<br><span style="color:var(--color-text-muted);">18/24</span></div>
+          <div class="type-row__sample" style="font-size:var(--text-lg);">Lead — parágrafo de destaque.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-base<br><span style="color:var(--color-text-muted);">16/24</span></div>
+          <div class="type-row__sample">Texto corrido padrão para descrições e conteúdo.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-sm<br><span style="color:var(--color-text-muted);">14/20</span></div>
+          <div class="type-row__sample" style="font-size:var(--text-sm);color:var(--color-text-secondary);">Texto secundário, hints, helpers.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__token">text-xs<br><span style="color:var(--color-text-muted);">12/16</span></div>
+          <div class="type-row__sample" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted);letter-spacing:var(--tracking-wider);text-transform:uppercase;">label · eyebrow · timestamp</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SPACING
+         ==================================================== -->
+    <section class="ds-section" id="spacing">
+      <div class="ds-section__eyebrow">FOUNDATION / LAYOUT</div>
+      <h2 class="ds-section__title">Espaçamento</h2>
+      <p class="ds-section__lead">Escala em base 4. Padding e margin sempre via token, nunca livre.</p>
+
+      <div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-4);">
+        <div class="token-row"><div class="token-row__sample">--space-1</div><div class="token-row__demo"><div style="width:4px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">4px · gaps mínimos</div></div>
+        <div class="token-row"><div class="token-row__sample">--space-2</div><div class="token-row__demo"><div style="width:8px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">8px · gaps entre ícones/texto</div></div>
+        <div class="token-row"><div class="token-row__sample">--space-3</div><div class="token-row__demo"><div style="width:12px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">12px · padding compacto</div></div>
+        <div class="token-row"><div class="token-row__sample">--space-4</div><div class="token-row__demo"><div style="width:16px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">16px · padding padrão de card</div></div>
+        <div class="token-row"><div class="token-row__sample">--space-5</div><div class="token-row__demo"><div style="width:24px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">24px · gap entre componentes</div></div>
+        <div class="token-row"><div class="token-row__sample">--space-6</div><div class="token-row__demo"><div style="width:32px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">32px · margens internas amplas</div></div>
+        <div class="token-row"><div class="token-row__sample">--space-7</div><div class="token-row__demo"><div style="width:48px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">48px · separação entre seções</div></div>
+        <div class="token-row" style="border:none;"><div class="token-row__sample">--space-8</div><div class="token-row__demo"><div style="width:64px;height:16px;background:var(--color-brand);"></div></div><div class="token-row__name">64px · hero, blocos generosos</div></div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         RADIUS & SHADOW
+         ==================================================== -->
+    <section class="ds-section" id="radius-shadow">
+      <div class="ds-section__eyebrow">FOUNDATION / STYLE</div>
+      <h2 class="ds-section__title">Bordas & Sombras</h2>
+      <p class="ds-section__lead">Cantos quase reto — a estética CS rejeita arredondamento exagerado. Pill só em avatares.</p>
+
+      <h3 class="ds-h3">Border Radius</h3>
+      <div class="demo-row">
+        <div style="width:96px;height:64px;background:var(--color-bg-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-none);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">none · 0</div>
+        <div style="width:96px;height:64px;background:var(--color-bg-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-sm);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">sm · 2px</div>
+        <div style="width:96px;height:64px;background:var(--color-bg-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-md);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">md · 4px</div>
+        <div style="width:96px;height:64px;background:var(--color-bg-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-lg);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">lg · 6px</div>
+        <div style="width:64px;height:64px;background:var(--color-bg-surface);border:1px solid var(--color-border-strong);border-radius:var(--radius-pill);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">pill</div>
+      </div>
+
+      <h3 class="ds-h3">Shadows</h3>
+      <div class="demo-row">
+        <div style="width:128px;height:64px;background:var(--color-bg-elevated);box-shadow:var(--shadow-sm);border-radius:var(--radius-sm);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">shadow-sm</div>
+        <div style="width:128px;height:64px;background:var(--color-bg-elevated);box-shadow:var(--shadow-md);border-radius:var(--radius-sm);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">shadow-md</div>
+        <div style="width:128px;height:64px;background:var(--color-bg-elevated);box-shadow:var(--shadow-lg);border-radius:var(--radius-sm);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-text-muted);">shadow-lg</div>
+        <div style="width:128px;height:64px;background:var(--color-bg-elevated);box-shadow:var(--shadow-glow);border-radius:var(--radius-sm);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--color-brand);">shadow-glow</div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         BUTTONS
+         ==================================================== -->
+    <section class="ds-section" id="c-buttons">
+      <div class="ds-section__eyebrow">COMPONENT / ACTION</div>
+      <h2 class="ds-section__title">Buttons</h2>
+      <p class="ds-section__lead">
+        Use <code>.btn</code> com um modificador. Texto sempre em maiúsculas com <code>tracking-wider</code> — leitura tipo briefing militar.
+      </p>
+
+      <h3 class="ds-h3">Variants</h3>
+      <div class="demo-row">
+        <button class="btn btn--primary">Quero Esta Skin</button>
+        <button class="btn btn--secondary">Ver Detalhes</button>
+        <button class="btn btn--ghost">Cancelar</button>
+        <button class="btn btn--danger">Marcar como Perdido</button>
+      </div>
+
+      <h3 class="ds-h3">Sizes</h3>
+      <div class="demo-row">
+        <button class="btn btn--primary btn--sm">Small</button>
+        <button class="btn btn--primary">Medium · default</button>
+        <button class="btn btn--primary btn--lg">Large</button>
+      </div>
+
+      <h3 class="ds-h3">Block</h3>
+      <button class="btn btn--primary btn--block btn--lg" style="max-width:380px;">Entrar no time</button>
+    </section>
+
+    <!-- ====================================================
+         INPUTS
+         ==================================================== -->
+    <section class="ds-section" id="c-inputs">
+      <div class="ds-section__eyebrow">COMPONENT / FORM</div>
+      <h2 class="ds-section__title">Inputs</h2>
+      <p class="ds-section__lead">
+        Labels em mono caixa-alta com asterisco laranja para obrigatórios. Focus ring em brand-bg.
+      </p>
+
+      <div class="demo-grid" style="max-width:720px;">
+        <div class="field">
+          <label class="field__label" for="i-name">Nome da Pessoa <span>*</span></label>
+          <input id="i-name" class="field__input" placeholder="Seu nome completo" />
+          <div class="field__hint">Como o vendedor vai te chamar</div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="i-skin">Skin desejada <span>*</span></label>
+          <select id="i-skin" class="field__select">
+            <option>Selecione uma skin</option>
+            <option>AK-47 | Redline (Field-Tested)</option>
+            <option>AWP | Asiimov (Battle-Scarred)</option>
+            <option>Karambit | Doppler (Factory New)</option>
+          </select>
+          <div class="field__hint">Item que você quer comprar</div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="i-phone">WhatsApp <span>*</span></label>
+          <input id="i-phone" class="field__input" type="tel" placeholder="(11) 99999-9999" />
+          <div class="field__hint">Vamos te chamar por aqui</div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="i-error">Estado de erro</label>
+          <input id="i-error" class="field__input" value="email-invalido" style="border-color:var(--color-danger);box-shadow:0 0 0 3px rgba(235,75,75,0.15);"/>
+          <div class="field__hint field__hint--error">Formato inválido. Tente de novo.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         BADGES
+         ==================================================== -->
+    <section class="ds-section" id="c-badges">
+      <div class="ds-section__eyebrow">COMPONENT / TAG</div>
+      <h2 class="ds-section__title">Badges</h2>
+      <p class="ds-section__lead">Identificadores curtos, lidos em piscada. Mono caixa-alta, sempre.</p>
+
+      <h3 class="ds-h3">Semantic</h3>
+      <div class="demo-row">
+        <span class="badge">Default</span>
+        <span class="badge badge--brand">StatTrak™</span>
+        <span class="badge badge--success">Em Estoque</span>
+        <span class="badge badge--warning">Últimas unidades</span>
+        <span class="badge badge--danger">Esgotado</span>
+        <span class="badge badge--info">Novo</span>
+      </div>
+
+      <h3 class="ds-h3">Rarity</h3>
+      <div class="demo-row">
+        <span class="badge badge--rarity-milspec">Mil-Spec</span>
+        <span class="badge badge--rarity-restricted">Restricted</span>
+        <span class="badge badge--rarity-classified">Classified</span>
+        <span class="badge badge--rarity-covert">Covert</span>
+        <span class="badge badge--rarity-knife">★ Knife</span>
+      </div>
+
+      <h3 class="ds-h3">Wear Condition</h3>
+      <div class="demo-row">
+        <span class="badge" style="color:var(--color-success);border-color:rgba(91,162,74,0.3);">Factory New</span>
+        <span class="badge" style="color:var(--color-info);border-color:rgba(94,152,217,0.3);">Minimal Wear</span>
+        <span class="badge" style="color:var(--color-accent);border-color:rgba(228,174,57,0.3);">Field-Tested</span>
+        <span class="badge" style="color:var(--color-brand);border-color:rgba(207,106,50,0.3);">Well-Worn</span>
+        <span class="badge" style="color:var(--color-danger);border-color:rgba(235,75,75,0.3);">Battle-Scarred</span>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         FLOAT METER
+         ==================================================== -->
+    <section class="ds-section" id="c-floatmeter">
+      <div class="ds-section__eyebrow">COMPONENT / SIGNATURE</div>
+      <h2 class="ds-section__title">Float Meter</h2>
+      <p class="ds-section__lead">
+        Elemento visual recorrente do sistema. Posicione o pointer com <code>--position</code> (0–100%).
+      </p>
+
+      <div style="max-width:480px;display:flex;flex-direction:column;gap:var(--space-5);padding:var(--space-5);background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);">
+        <div>
+          <div class="float-meter">
+            <div class="float-meter__pointer" style="left:5%"></div>
+          </div>
+          <div class="float-meter__value">
+            <span>Factory New</span>
+            <strong>0.0231</strong>
+          </div>
+        </div>
+
+        <div>
+          <div class="float-meter">
+            <div class="float-meter__pointer" style="left:22%"></div>
+          </div>
+          <div class="float-meter__value">
+            <span>Field-Tested</span>
+            <strong>0.2189</strong>
+          </div>
+        </div>
+
+        <div>
+          <div class="float-meter">
+            <div class="float-meter__pointer" style="left:78%"></div>
+          </div>
+          <div class="float-meter__value">
+            <span>Battle-Scarred</span>
+            <strong>0.7842</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         KILLFEED
+         ==================================================== -->
+    <section class="ds-section" id="c-killfeed">
+      <div class="ds-section__eyebrow">COMPONENT / SIGNATURE</div>
+      <h2 class="ds-section__title">Killfeed</h2>
+      <p class="ds-section__lead">
+        Toma emprestado o killfeed do HUD do CS. Reaparece em três contextos: eyebrow da hero,
+        notificação de novo lead no kanban, e divisor de seção. É o elemento que liga a interface
+        ao gameplay sem custar nada estrutural.
+      </p>
+
+      <h3 class="ds-h3">Estados</h3>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);align-items:flex-start;">
+        <div class="killfeed">
+          <span class="killfeed__tag">[HEADSHOT]</span>
+          <span class="killfeed__name killfeed__name--victim">LUCAS</span>
+          <span class="killfeed__weapon">
+            <svg viewBox="0 0 44 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2,7 L8,5 L18,4 L28,5 L36,6 L42,7 L42,9 L36,9 L28,8 L18,8 L8,8 L2,8 Z M22,4 L28,2 L28,5 Z" fill="currentColor"/>
+            </svg>
+            AK-47 BLOODSPORT
+          </span>
+          <span class="killfeed__name" style="color: var(--color-brand);">MARCELO</span>
+        </div>
+        <div class="killfeed">
+          <span class="killfeed__tag killfeed__tag--success">[ASSIST]</span>
+          <span class="killfeed__name killfeed__name--victim">BIA</span>
+          <span class="killfeed__weapon">
+            <svg viewBox="0 0 44 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2,7 L8,5 L18,4 L28,5 L36,6 L42,7 L42,9 L36,9 L28,8 L18,8 L8,8 L2,8 Z M22,4 L28,2 L28,5 Z" fill="currentColor"/>
+            </svg>
+            ★ KARAMBIT DOPPLER
+          </span>
+          <span class="killfeed__name" style="color: var(--color-info);">RAFAEL</span>
+        </div>
+        <div class="killfeed">
+          <span class="killfeed__tag killfeed__tag--ct">[CT WIN]</span>
+          <span class="killfeed__name">RODRIGO</span>
+          <span class="killfeed__sep">→</span>
+          <span class="killfeed__weapon">PAGOU R$ 2.890</span>
+        </div>
+      </div>
+
+      <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-4);line-height:var(--leading-relaxed);">
+        <strong style="color:var(--color-brand);">// uso</strong><br>
+        Tag <code>[HEADSHOT]</code> brand · <code>[ASSIST]</code> success · <code>[CT&nbsp;WIN]</code> info. Nome do lead com strike-through, vendedor responsável colorido. Ícone de arma simplificado, opcional.
+      </p>
+    </section>
+
+    <!-- ====================================================
+         SCOREBOARD
+         ==================================================== -->
+    <section class="ds-section" id="c-scoreboard">
+      <div class="ds-section__eyebrow">COMPONENT / HUD</div>
+      <h2 class="ds-section__title">Scoreboard</h2>
+      <p class="ds-section__lead">
+        Placar do dia em formato de fim-de-round. Kills (vendas fechadas), Assists (em contato),
+        Deaths (perdidos) e Round (lead atual da fila). Lê-se de relance, conecta com o vocabulário do time.
+      </p>
+
+      <div class="scoreboard" style="margin-bottom: var(--space-4);">
+        <div class="scoreboard__stat scoreboard__stat--kills">
+          <span class="scoreboard__label">Kills</span>
+          <span class="scoreboard__value">03</span>
+        </div>
+        <div class="scoreboard__stat scoreboard__stat--assists">
+          <span class="scoreboard__label">Assists</span>
+          <span class="scoreboard__value">02</span>
+        </div>
+        <div class="scoreboard__stat scoreboard__stat--deaths">
+          <span class="scoreboard__label">Deaths</span>
+          <span class="scoreboard__value">01</span>
+        </div>
+        <div class="scoreboard__stat scoreboard__stat--neutral">
+          <span class="scoreboard__label">Round</span>
+          <span class="scoreboard__value">10</span>
+        </div>
+      </div>
+
+      <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted);line-height:var(--leading-relaxed);">
+        <strong style="color:var(--color-brand);">// mapeamento</strong><br>
+        <code>kills</code> · finalizado&nbsp;✓ &nbsp;·&nbsp; <code>assists</code> · em contato &nbsp;·&nbsp; <code>deaths</code> · perdido &nbsp;·&nbsp; <code>round</code> · lead atual no ciclo round-robin
+      </p>
+    </section>
+
+    <!-- ====================================================
+         SKIN CARD
+         ==================================================== -->
+    <section class="ds-section" id="c-skincard">
+      <div class="ds-section__eyebrow">COMPONENT / PRODUCT</div>
+      <h2 class="ds-section__title">Skin Card</h2>
+      <p class="ds-section__lead">
+        Use <code>--rarity</code> custom property para tingir borda lateral e glow no hover.
+      </p>
+
+      <div class="vitrine" style="max-width:900px;">
+
+        <!-- CARD 1 — AK-47 Bloodsport -->
+        <article class="skin-card" style="--rarity: var(--color-rarity-classified); --pattern-from:#d32ce6; --pattern-via:#5e1638; --pattern-to:#0f0510;">
+          <div class="skin-card__visual">
+            <div class="skin-card__corner--left">
+              <span class="badge badge--rarity-classified">Classified</span>
+            </div>
+            <div class="skin-card__corner">
+              <span class="badge badge--stattrak"></span>
+            </div>
+            <div class="skin-card__visual-name">
+              Bloodsport
+            </div>
+          </div>
+          <div class="skin-card__body">
+            <div>
+              <div class="skin-card__weapon">AK-47 · T-SIDE</div>
+              <div class="skin-card__name">Bloodsport</div>
+            </div>
+            <div>
+              <div class="float-meter"><div class="float-meter__pointer" style="left:18%"></div></div>
+              <div class="float-meter__value"><span>Field-Tested</span><strong>0.1842</strong></div>
+            </div>
+            <div class="skin-card__sticker-row">
+              <span class="skin-card__sticker-row__pattern">#387 · TIGER</span>
+              <span class="skin-card__sticker">IEM COLOGNE 2024</span>
+            </div>
+            <div class="skin-card__footer">
+              <div class="skin-card__price"><small>R$</small>2.890</div>
+              <button class="btn btn--primary btn--sm">Comprar</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 2 — AWP Dragon Lore -->
+        <article class="skin-card" style="--rarity: var(--color-rarity-covert); --pattern-from:#e4ae39; --pattern-via:#5e4218; --pattern-to:#0f0a04;">
+          <div class="skin-card__visual">
+            <div class="skin-card__corner--left">
+              <span class="badge badge--rarity-covert">Covert</span>
+            </div>
+            <div class="skin-card__visual-name">
+              Dragon Lore
+            </div>
+          </div>
+          <div class="skin-card__body">
+            <div>
+              <div class="skin-card__weapon">AWP · BOTH SIDES</div>
+              <div class="skin-card__name">Dragon Lore</div>
+            </div>
+            <div>
+              <div class="float-meter"><div class="float-meter__pointer" style="left:4%"></div></div>
+              <div class="float-meter__value"><span>Factory New</span><strong>0.0089</strong></div>
+            </div>
+            <div class="skin-card__sticker-row">
+              <span class="skin-card__sticker-row__pattern">#420 · CENTERED</span>
+              <span class="skin-card__sticker">KATOWICE 2014</span>
+            </div>
+            <div class="skin-card__footer">
+              <div class="skin-card__price"><small>R$</small>48.500</div>
+              <button class="btn btn--primary btn--sm">Comprar</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 3 — Karambit Doppler -->
+        <article class="skin-card" style="--rarity: var(--color-rarity-knife); --pattern-from:#ff4dc4; --pattern-via:#3b0d52; --pattern-to:#070210;">
+          <div class="skin-card__visual">
+            <div class="skin-card__corner--left">
+              <span class="badge badge--rarity-knife">★ Knife</span>
+            </div>
+            <div class="skin-card__corner">
+              <span class="badge badge--stattrak"></span>
+            </div>
+            <div class="skin-card__visual-name">
+              Doppler<br>P2
+            </div>
+          </div>
+          <div class="skin-card__body">
+            <div>
+              <div class="skin-card__weapon">★ KARAMBIT · MELEE</div>
+              <div class="skin-card__name">Doppler · Phase 2</div>
+            </div>
+            <div>
+              <div class="float-meter"><div class="float-meter__pointer" style="left:2%"></div></div>
+              <div class="float-meter__value"><span>Factory New</span><strong>0.0019</strong></div>
+            </div>
+            <div class="skin-card__sticker-row">
+              <span class="skin-card__sticker-row__pattern">PHASE 2 · 100% PINK</span>
+            </div>
+            <div class="skin-card__footer">
+              <div class="skin-card__price"><small>R$</small>12.400</div>
+              <button class="btn btn--primary btn--sm">Comprar</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         LEAD CARD (kanban card)
+         ==================================================== -->
+    <section class="ds-section" id="c-leadcard">
+      <div class="ds-section__eyebrow">COMPONENT / KANBAN</div>
+      <h2 class="ds-section__title">Lead Card</h2>
+      <p class="ds-section__lead">Compacto, draggable, identifica claramente o vendedor responsável.</p>
+
+      <div style="max-width:280px;">
+        <div class="lead-card">
+          <div class="lead-card__head">
+            <div class="lead-card__name">Lucas Andrade</div>
+            <span class="badge badge--brand">NOVO</span>
+          </div>
+          <div class="lead-card__skin">AK-47 | Bloodsport (FT)</div>
+          <div class="lead-card__phone">
+            <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            (11) 98742-3344
+          </div>
+          <div class="lead-card__footer">
+            <div class="lead-card__seller">
+              <div class="avatar">M</div>
+              MARCELO
+            </div>
+            <div class="lead-card__time">há 4min</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PAGE: LANDING
+         ==================================================== -->
+    <section class="ds-section" id="page-landing">
+      <div class="ds-section__eyebrow">PAGE / PUBLIC</div>
+      <h2 class="ds-section__title">Landing Page</h2>
+      <p class="ds-section__lead">
+        Hero + vitrine + formulário. O envio do formulário cria automaticamente um lead na coluna
+        <em>Sem Contato</em>, atribuído via round-robin (Marcelo → Rafael → Renato → Pedro → Leonardo).
+      </p>
+
+      <div class="stage">
+        <div class="stage__bar">crate.br &nbsp;/&nbsp; público &nbsp;/&nbsp; index.html</div>
+        <div class="stage__body">
+
+          <!-- Header -->
+          <header class="landing-header">
+            <div class="landing-header__brand">
+              <div class="landing-header__brand-logo">C</div>
+              <div class="landing-header__brand-text">CRATE<span>//</span>BR</div>
+            </div>
+            <nav class="landing-header__nav">
+              <a href="#">Vitrine</a>
+              <a href="#">Sobre</a>
+              <a href="#">Contato</a>
+            </nav>
+          </header>
+
+          <!-- Hero -->
+          <section class="hero">
+            <div class="killfeed" style="margin-bottom: var(--space-5);">
+              <span class="killfeed__tag">[HEADSHOT]</span>
+              <span class="killfeed__name killfeed__name--victim">LUCAS</span>
+              <span class="killfeed__weapon">
+                <svg viewBox="0 0 44 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M2,7 L8,5 L18,4 L28,5 L36,6 L42,7 L42,9 L36,9 L28,8 L18,8 L8,8 L2,8 Z M22,4 L28,2 L28,5 Z M14,8 L16,11 L18,8 Z" fill="currentColor"/>
+                </svg>
+                AK-47 BLOODSPORT
+              </span>
+              <span class="killfeed__name" style="color: var(--color-brand);">MARCELO</span>
+            </div>
+            <h1 class="hero__title">
+              Skins raras.<br>
+              Float baixo.<br>
+              <span class="hero__title-accent">Negociação direta.</span>
+            </h1>
+            <p class="hero__lead">
+              Vitrine de skins selecionadas, do Mil-Spec ao Knife. Você escolhe a skin, deixa seu
+              WhatsApp e um vendedor do nosso time entra em contato em até 10 minutos. Sem bot,
+              sem marketplace, sem taxa de plataforma.
+            </p>
+            <div class="hero__actions">
+              <a href="#vitrine-anchor" class="btn btn--primary btn--lg">Ver Vitrine</a>
+              <a href="#form-anchor" class="btn btn--secondary btn--lg">Falar com vendedor</a>
+            </div>
+            <div class="hero__stats">
+              <div>
+                <div class="hero__stat-value">340<sup>+</sup></div>
+                <div class="hero__stat-label">skins em catálogo</div>
+              </div>
+              <div>
+                <div class="hero__stat-value">10<sup>min</sup></div>
+                <div class="hero__stat-label">tempo médio de resposta</div>
+              </div>
+              <div>
+                <div class="hero__stat-value">100<sup>%</sup></div>
+                <div class="hero__stat-label">negociação humana</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Filters -->
+          <div id="vitrine-anchor"></div>
+          <div class="filters">
+            <button class="filter-chip filter-chip--active">Todas</button>
+            <button class="filter-chip">Rifles</button>
+            <button class="filter-chip">Snipers</button>
+            <button class="filter-chip">Pistolas</button>
+            <button class="filter-chip">★ Facas</button>
+            <button class="filter-chip">★ Luvas</button>
+          </div>
+
+          <!-- Vitrine (3 skins) -->
+          <div class="vitrine-hint">
+            <span>03 ITEMS · CURADORIA DA SEMANA</span>
+          </div>
+          <div class="vitrine" style="margin-bottom:var(--space-7);">
+
+            <article class="skin-card" style="--rarity: var(--color-rarity-restricted); --pattern-from:#f1751f; --pattern-via:#3a2a26; --pattern-to:#0f0a08;">
+              <div class="skin-card__visual">
+                <div class="skin-card__corner--left"><span class="badge badge--rarity-restricted">Restricted</span></div>
+                <div class="skin-card__position">01 / 03</div>
+                <div class="skin-card__visual-name">
+                  Asiimov
+                </div>
+              </div>
+              <div class="skin-card__body">
+                <div>
+                  <div class="skin-card__weapon">AWP · BOTH SIDES</div>
+                  <div class="skin-card__name">Asiimov</div>
+                </div>
+                <div>
+                  <div class="float-meter"><div class="float-meter__pointer" style="left:48%"></div></div>
+                  <div class="float-meter__value"><span>Field-Tested</span><strong>0.4812</strong></div>
+                </div>
+                <div class="skin-card__sticker-row">
+                  <span class="skin-card__sticker-row__pattern">SCOPE CLEAN</span>
+                  <span class="skin-card__sticker">PARIS 2023</span>
+                </div>
+                <div class="skin-card__footer">
+                  <div class="skin-card__price"><small>R$</small>720</div>
+                  <button class="btn btn--primary btn--sm">Quero</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="skin-card" style="--rarity: var(--color-rarity-covert); --pattern-from:#cc2030; --pattern-via:#1c2944; --pattern-to:#080a14;">
+              <div class="skin-card__visual">
+                <div class="skin-card__corner--left"><span class="badge badge--rarity-covert">Covert</span></div>
+                <div class="skin-card__corner"><span class="badge badge--stattrak"></span></div>
+                <div class="skin-card__position">02 / 03</div>
+                <div class="skin-card__visual-name">
+                  Vulcan
+                </div>
+              </div>
+              <div class="skin-card__body">
+                <div>
+                  <div class="skin-card__weapon">AK-47 · T-SIDE</div>
+                  <div class="skin-card__name">Vulcan</div>
+                </div>
+                <div>
+                  <div class="float-meter"><div class="float-meter__pointer" style="left:8%"></div></div>
+                  <div class="float-meter__value"><span>Factory New</span><strong>0.0312</strong></div>
+                </div>
+                <div class="skin-card__sticker-row">
+                  <span class="skin-card__sticker-row__pattern">#088 · MAG CLEAN</span>
+                  <span class="skin-card__sticker">FURIA · RIO 2022</span>
+                </div>
+                <div class="skin-card__footer">
+                  <div class="skin-card__price"><small>R$</small>1.480</div>
+                  <button class="btn btn--primary btn--sm">Quero</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="skin-card" style="--rarity: var(--color-rarity-classified); --pattern-from:#4a8dd8; --pattern-via:#d8a838; --pattern-to:#0a1228;">
+              <div class="skin-card__visual">
+                <div class="skin-card__corner--left"><span class="badge badge--rarity-classified">Classified</span></div>
+                <div class="skin-card__position">03 / 03</div>
+                <div class="skin-card__visual-name">
+                  The Emperor
+                </div>
+              </div>
+              <div class="skin-card__body">
+                <div>
+                  <div class="skin-card__weapon">M4A4 · CT-SIDE</div>
+                  <div class="skin-card__name">The Emperor</div>
+                </div>
+                <div>
+                  <div class="float-meter"><div class="float-meter__pointer" style="left:14%"></div></div>
+                  <div class="float-meter__value"><span>Field-Tested</span><strong>0.1422</strong></div>
+                </div>
+                <div class="skin-card__sticker-row">
+                  <span class="skin-card__sticker-row__pattern">#246 · CROWN</span>
+                  <span class="skin-card__sticker">MAJOR ANTWERP</span>
+                </div>
+                <div class="skin-card__footer">
+                  <div class="skin-card__price"><small>R$</small>980</div>
+                  <button class="btn btn--primary btn--sm">Quero</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Form -->
+          <div id="form-anchor"></div>
+          <div class="form-block">
+            <div class="form-block__head">
+              <div class="form-block__eyebrow">// Chamada de vendedor</div>
+              <h3 class="form-block__title">Falar com a gente</h3>
+              <p style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:var(--space-2);">
+                Preenche aí. Em segundos seu pedido cai no painel de um dos nossos vendedores.
+              </p>
+            </div>
+
+            <div class="form-block__grid">
+              <div class="field">
+                <label class="field__label" for="f-name">Nome <span>*</span></label>
+                <input id="f-name" class="field__input" placeholder="Seu nome completo" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="f-skin">Skin que você quer <span>*</span></label>
+                <input id="f-skin" class="field__input" placeholder="Ex.: AK-47 | Vulcan (FN)" />
+                <div class="field__hint">Você pode descrever ou colar o nome direto do inventário Steam</div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="f-phone">WhatsApp <span>*</span></label>
+                <input id="f-phone" class="field__input" type="tel" placeholder="(11) 99999-9999" />
+                <div class="field__hint">Precisa ter WhatsApp ativo</div>
+              </div>
+              <button class="btn btn--primary btn--lg btn--block">Enviar para o vendedor</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PAGE: LOGIN
+         ==================================================== -->
+    <section class="ds-section" id="page-login">
+      <div class="ds-section__eyebrow">PAGE / AUTH</div>
+      <h2 class="ds-section__title">Login</h2>
+      <p class="ds-section__lead">Tela simples, sem SSO. Entrada do time de vendas no CRM interno.</p>
+
+      <div class="stage">
+        <div class="stage__bar">crate.br &nbsp;/&nbsp; interno &nbsp;/&nbsp; /login</div>
+        <div class="login">
+          <div class="login__card">
+            <div class="login__brand">
+              <div class="login__logo">C</div>
+              <div class="login__title">CRATE//BR</div>
+              <div class="login__subtitle">// painel do vendedor</div>
+            </div>
+
+            <form class="login__form">
+              <div class="field">
+                <label class="field__label" for="l-user">Usuário <span>*</span></label>
+                <input id="l-user" class="field__input" placeholder="marcelo" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="l-pass">Senha <span>*</span></label>
+                <input id="l-pass" class="field__input" type="password" placeholder="••••••••" />
+              </div>
+              <button type="button" class="btn btn--primary btn--block btn--lg" style="margin-top:var(--space-2);">Entrar</button>
+              <a href="#" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted);letter-spacing:var(--tracking-wider);text-transform:uppercase;text-align:center;text-decoration:none;">esqueci a senha</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PAGE: KANBAN
+         ==================================================== -->
+    <section class="ds-section" id="page-kanban">
+      <div class="ds-section__eyebrow">PAGE / INTERNAL</div>
+      <h2 class="ds-section__title">Kanban de Leads</h2>
+      <p class="ds-section__lead">
+        Quatro fases fixas. Cards são draggables entre colunas. O round-robin acontece <em>na entrada</em>
+        — depois o card já vem atribuído ao vendedor da vez.
+      </p>
+
+      <div class="stage">
+        <div class="stage__bar">crate.br &nbsp;/&nbsp; interno &nbsp;/&nbsp; /leads</div>
+        <div class="stage__body">
+
+          <!-- Kanban header -->
+          <div class="kanban-header">
+            <div>
+              <div class="kanban-header__title">
+                <small>// painel · round 14 do mês</small>
+                Leads ativos
+              </div>
+            </div>
+            <div class="kanban-header__meta">
+              <div class="scoreboard" title="Performance do dia">
+                <div class="scoreboard__stat scoreboard__stat--kills">
+                  <span class="scoreboard__label">Kills</span>
+                  <span class="scoreboard__value">03</span>
+                </div>
+                <div class="scoreboard__stat scoreboard__stat--assists">
+                  <span class="scoreboard__label">Assists</span>
+                  <span class="scoreboard__value">02</span>
+                </div>
+                <div class="scoreboard__stat scoreboard__stat--deaths">
+                  <span class="scoreboard__label">Deaths</span>
+                  <span class="scoreboard__value">01</span>
+                </div>
+                <div class="scoreboard__stat scoreboard__stat--neutral">
+                  <span class="scoreboard__label">Round</span>
+                  <span class="scoreboard__value">10</span>
+                </div>
+              </div>
+              <div class="seller-stack">
+                <div class="seller-stack__label">Próximo</div>
+                <div class="seller-stack__avatars">
+                  <div class="avatar avatar--md" title="Marcelo">M</div>
+                  <div class="avatar avatar--md" title="Rafael">R</div>
+                  <div class="avatar avatar--md" title="Renato">N</div>
+                  <div class="avatar avatar--md" title="Pedro">P</div>
+                  <div class="avatar avatar--md" title="Leonardo">L</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Killfeed notification — new lead -->
+          <div class="killfeed" style="margin-bottom: var(--space-4);">
+            <span class="killfeed__tag killfeed__tag--success">[ASSIST]</span>
+            <span class="killfeed__name killfeed__name--victim">LUCAS ANDRADE</span>
+            <span class="killfeed__weapon">
+              <svg viewBox="0 0 44 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M2,7 L8,5 L18,4 L28,5 L36,6 L42,7 L42,9 L36,9 L28,8 L18,8 L8,8 L2,8 Z M22,4 L28,2 L28,5 Z" fill="currentColor"/>
+              </svg>
+              AK-47 VULCAN
+            </span>
+            <span class="killfeed__sep">◄</span>
+            <span class="killfeed__name" style="color: var(--color-brand);">MARCELO</span>
+            <span class="killfeed__sep">·</span>
+            <span style="color: var(--color-text-muted);">há 2 min</span>
+          </div>
+
+          <!-- Kanban -->
+          <div class="kanban">
+
+            <!-- COLUMN 1 — Sem Contato -->
+            <div class="kanban-column" style="--column-color: var(--color-status-pending);">
+              <div class="kanban-column__header">
+                <div class="kanban-column__title">Sem Contato</div>
+                <div class="kanban-column__count">04</div>
+              </div>
+              <div class="kanban-column__body">
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Lucas Andrade</div>
+                    <span class="badge badge--brand">NOVO</span>
+                  </div>
+                  <div class="lead-card__skin">AK-47 | Vulcan (FN)</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (11) 98742-3344
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">M</div> MARCELO</div>
+                    <div class="lead-card__time">há 2min</div>
+                  </div>
+                </div>
+
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Bia Souza</div>
+                  </div>
+                  <div class="lead-card__skin">Karambit | Doppler P2</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (21) 99123-4567
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">R</div> RAFAEL</div>
+                    <div class="lead-card__time">há 6min</div>
+                  </div>
+                </div>
+
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Pedro Lima</div>
+                  </div>
+                  <div class="lead-card__skin">AWP | Asiimov (FT)</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (47) 98876-5544
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">N</div> RENATO</div>
+                    <div class="lead-card__time">há 12min</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMN 2 — Em Contato -->
+            <div class="kanban-column" style="--column-color: var(--color-status-active);">
+              <div class="kanban-column__header">
+                <div class="kanban-column__title">Em Contato</div>
+                <div class="kanban-column__count">02</div>
+              </div>
+              <div class="kanban-column__body">
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">João Mendes</div>
+                  </div>
+                  <div class="lead-card__skin">M4A4 | Howl (MW)</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (11) 97654-3210
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">P</div> PEDRO</div>
+                    <div class="lead-card__time">há 22min</div>
+                  </div>
+                </div>
+
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Camila Reis</div>
+                  </div>
+                  <div class="lead-card__skin">USP-S | Kill Confirmed</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (31) 99887-1122
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">L</div> LEONARDO</div>
+                    <div class="lead-card__time">há 1h</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMN 3 — Perdido -->
+            <div class="kanban-column" style="--column-color: var(--color-status-lost);">
+              <div class="kanban-column__header">
+                <div class="kanban-column__title">Perdido</div>
+                <div class="kanban-column__count">01</div>
+              </div>
+              <div class="kanban-column__body">
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Felipe Costa</div>
+                    <span class="badge badge--danger">FRIO</span>
+                  </div>
+                  <div class="lead-card__skin">Glock-18 | Fade</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (85) 99123-9988
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">M</div> MARCELO</div>
+                    <div class="lead-card__time">ontem</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMN 4 — Finalizado -->
+            <div class="kanban-column" style="--column-color: var(--color-status-won);">
+              <div class="kanban-column__header">
+                <div class="kanban-column__title">Finalizado</div>
+                <div class="kanban-column__count">03</div>
+              </div>
+              <div class="kanban-column__body">
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Rodrigo Sá</div>
+                    <span class="badge badge--success">WIN</span>
+                  </div>
+                  <div class="lead-card__skin">AK-47 | Redline (FT)</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (11) 97777-2233
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">R</div> RAFAEL</div>
+                    <div class="lead-card__time">ontem</div>
+                  </div>
+                </div>
+
+                <div class="lead-card">
+                  <div class="lead-card__head">
+                    <div class="lead-card__name">Marina Alves</div>
+                    <span class="badge badge--success">WIN</span>
+                  </div>
+                  <div class="lead-card__skin">Desert Eagle | Blaze</div>
+                  <div class="lead-card__phone">
+                    <svg class="lead-card__phone-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    (51) 99876-5432
+                  </div>
+                  <div class="lead-card__footer">
+                    <div class="lead-card__seller"><div class="avatar">N</div> RENATO</div>
+                    <div class="lead-card__time">2 dias</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         ARCHITECTURE
+         ==================================================== -->
+    <section class="ds-section" id="architecture">
+      <div class="ds-section__eyebrow">ENGINEERING / STRUCTURE</div>
+      <h2 class="ds-section__title">Arquitetura sugerida</h2>
+      <p class="ds-section__lead">
+        Tokens centralizados em <code>tokens.css</code>. Componentes seguem Atomic Design (atoms → molecules → organisms → templates → pages). Stack indicativa: Next.js / React + CSS Modules ou Tailwind com preset dos tokens.
+      </p>
+
+      <div class="arch-tree">
+<span class="dir">src/</span>
+├── <span class="dir">app/</span>                              <span class="note"># rotas (Next App Router)</span>
+│   ├── <span class="dir">(public)/</span>
+│   │   └── <span class="file">page.tsx</span>                  <span class="note"># landing</span>
+│   ├── <span class="dir">(auth)/</span>
+│   │   └── <span class="dir">login/</span><span class="file">page.tsx</span>
+│   └── <span class="dir">(internal)/</span>
+│       └── <span class="dir">leads/</span><span class="file">page.tsx</span>           <span class="note"># kanban</span>
+│
+├── <span class="dir">styles/</span>
+│   ├── <span class="file">tokens.css</span>                    <span class="note"># ÚNICA fonte de variáveis</span>
+│   ├── <span class="file">reset.css</span>
+│   └── <span class="file">globals.css</span>
+│
+├── <span class="dir">components/</span>
+│   ├── <span class="dir">atoms/</span>                         <span class="note"># sem dependência</span>
+│   │   ├── <span class="dir">Button/</span>
+│   │   ├── <span class="dir">Input/</span>
+│   │   ├── <span class="dir">Badge/</span>
+│   │   ├── <span class="dir">Avatar/</span>
+│   │   └── <span class="dir">FloatMeter/</span>                <span class="note"># signature</span>
+│   ├── <span class="dir">molecules/</span>                     <span class="note"># compõem atoms</span>
+│   │   ├── <span class="dir">FormField/</span>
+│   │   ├── <span class="dir">SkinCard/</span>
+│   │   └── <span class="dir">LeadCard/</span>
+│   ├── <span class="dir">organisms/</span>                     <span class="note"># compõem molecules</span>
+│   │   ├── <span class="dir">LandingHeader/</span>
+│   │   ├── <span class="dir">Hero/</span>
+│   │   ├── <span class="dir">SkinShowcase/</span>
+│   │   ├── <span class="dir">LeadForm/</span>
+│   │   └── <span class="dir">KanbanBoard/</span>
+│   └── <span class="dir">templates/</span>
+│       ├── <span class="dir">PublicLayout/</span>
+│       └── <span class="dir">InternalLayout/</span>
+│
+├── <span class="dir">features/</span>                          <span class="note"># lógica de domínio</span>
+│   ├── <span class="dir">leads/</span>
+│   │   ├── <span class="file">lead.types.ts</span>
+│   │   ├── <span class="file">lead.service.ts</span>
+│   │   └── <span class="file">useLeads.ts</span>
+│   ├── <span class="dir">round-robin/</span>
+│   │   ├── <span class="file">sellers.ts</span>                <span class="note"># [M,R,N,P,L]</span>
+│   │   └── <span class="file">assignNextSeller.ts</span>
+│   └── <span class="dir">auth/</span>
+│       └── <span class="file">useAuth.ts</span>
+│
+├── <span class="dir">lib/</span>
+│   ├── <span class="file">api.ts</span>
+│   └── <span class="file">storage.ts</span>
+│
+└── <span class="dir">types/</span>
+    ├── <span class="file">skin.ts</span>
+    └── <span class="file">lead.ts</span>
+      </div>
+
+      <div class="note-callout" style="margin-top:var(--space-5);">
+        <strong>Round-robin entre sessões:</strong> persistir o índice do próximo vendedor em uma chave única — <code>seller_pointer</code> — no backend (ou em <code>localStorage</code> + sync se o teste for client-only). Operação de atribuição deve ser atômica: ler ponteiro → incrementar (mod 5) → gravar → retornar vendedor. Sob concorrência real, usar transação no banco ou lock otimista. Documentar a decisão.
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CONVENTIONS
+         ==================================================== -->
+    <section class="ds-section" id="conventions">
+      <div class="ds-section__eyebrow">ENGINEERING / RULES</div>
+      <h2 class="ds-section__title">Convenções</h2>
+      <p class="ds-section__lead">Regras curtas, não negociáveis.</p>
+
+      <h3 class="ds-h3">Nomenclatura de componentes</h3>
+      <div style="background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-5);font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-relaxed);">
+        <p style="margin-bottom:var(--space-3);"><span style="color:var(--color-brand);">// Arquivos & componentes</span><br>
+        Componente em <span style="color:var(--color-text-primary);">PascalCase</span> · <code>SkinCard.tsx</code><br>
+        Hook em <span style="color:var(--color-text-primary);">camelCase</span> prefixado <code>use</code> · <code>useLeads.ts</code><br>
+        Constante em <span style="color:var(--color-text-primary);">UPPER_SNAKE</span> · <code>SELLER_ROTATION</code><br>
+        Tipo em <span style="color:var(--color-text-primary);">PascalCase</span> · <code>type Lead = {}</code></p>
+
+        <p style="margin-bottom:var(--space-3);"><span style="color:var(--color-brand);">// CSS / Classes (BEM relaxado)</span><br>
+        Bloco · <code>.skin-card</code><br>
+        Elemento · <code>.skin-card__visual</code><br>
+        Modificador · <code>.skin-card--featured</code><br>
+        Estado · <code>.is-loading</code> · <code>.is-dragging</code></p>
+
+        <p><span style="color:var(--color-brand);">// Tokens</span><br>
+        Cor · <code>--color-{escopo}-{nome}</code> · ex: <code>--color-rarity-covert</code><br>
+        Espaço · <code>--space-{n}</code> · ex: <code>--space-4</code><br>
+        Type · <code>--text-{tamanho}</code> · ex: <code>--text-xl</code></p>
+      </div>
+
+      <h3 class="ds-h3">Regras de uso</h3>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:var(--space-3);">
+        <li style="padding:var(--space-3) var(--space-4);background:var(--color-bg-elevated);border-left:3px solid var(--color-brand);border-radius:var(--radius-sm);"><strong style="color:var(--color-brand);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-widest);">01 ·</strong> Toda cor, tipografia, espaçamento e borda vem de token. Sem hex direto, sem px hardcoded em CSS de componente.</li>
+        <li style="padding:var(--space-3) var(--space-4);background:var(--color-bg-elevated);border-left:3px solid var(--color-brand);border-radius:var(--radius-sm);"><strong style="color:var(--color-brand);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-widest);">02 ·</strong> Mobile-first sempre. Media query é só <code>min-width</code>. Layout de coluna única é o default; grid/flex elaborado entra em breakpoints maiores.</li>
+        <li style="padding:var(--space-3) var(--space-4);background:var(--color-bg-elevated);border-left:3px solid var(--color-brand);border-radius:var(--radius-sm);"><strong style="color:var(--color-brand);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-widest);">03 ·</strong> Atomic Design rigoroso. Atom não importa molecule. Molecule não importa organism. Quebrar isso é dívida — registre.</li>
+        <li style="padding:var(--space-3) var(--space-4);background:var(--color-bg-elevated);border-left:3px solid var(--color-brand);border-radius:var(--radius-sm);"><strong style="color:var(--color-brand);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-widest);">04 ·</strong> Acessibilidade não é opcional. Focus ring visível, labels conectados a inputs, contraste mínimo AA, <code>prefers-reduced-motion</code> respeitado.</li>
+        <li style="padding:var(--space-3) var(--space-4);background:var(--color-bg-elevated);border-left:3px solid var(--color-brand);border-radius:var(--radius-sm);"><strong style="color:var(--color-brand);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-widest);">05 ·</strong> Round-robin do vendedor é responsabilidade de <code>features/round-robin</code>. Nenhuma view chama essa lógica direto — vai pelo service.</li>
+        <li style="padding:var(--space-3) var(--space-4);background:var(--color-bg-elevated);border-left:3px solid var(--color-brand);border-radius:var(--radius-sm);"><strong style="color:var(--color-brand);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-widest);">06 ·</strong> Telefone usa máscara <code>(##) #####-####</code>. Validação rejeita ausência de DDD.</li>
+      </ul>
+    </section>
+
+    <footer class="ds-footer">
+      <span>CRATE//BR</span> · Design System v1.0 · Built for the Kateto challenge
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>

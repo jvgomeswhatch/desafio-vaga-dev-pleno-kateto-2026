@@ -1,0 +1,331 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS — CRATE//BR
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --color-bg-base:        #0a0e13;
+  --color-bg-elevated:    #11161d;
+  --color-bg-surface:     #1a2029;
+  --color-bg-raised:      #232b36;
+  --color-bg-overlay:     rgba(10, 14, 19, 0.88);
+
+  /* Borders */
+  --color-border-subtle:  #1f2630;
+  --color-border-default: #2d3540;
+  --color-border-strong:  #3d4754;
+
+  /* Text */
+  --color-text-primary:   #e6edf3;
+  --color-text-secondary: #9ba3af;
+  --color-text-muted:     #6b7280;
+  --color-text-disabled:  #4a5260;
+  --color-text-inverse:   #0a0e13;
+
+  /* Brand — StatTrak Orange */
+  --color-brand:          #cf6a32;
+  --color-brand-bright:   #ff8b4d;
+  --color-brand-dim:      #8a4621;
+  --color-brand-bg:       rgba(207, 106, 50, 0.1);
+  --color-brand-glow:     rgba(207, 106, 50, 0.35);
+
+  /* Accent — Covert Knife Gold */
+  --color-accent:         #e4ae39;
+  --color-accent-bg:      rgba(228, 174, 57, 0.1);
+
+  /* Rarity scale */
+  --color-rarity-consumer:    #b0c3d9;
+  --color-rarity-industrial:  #5e98d9;
+  --color-rarity-milspec:     #4b69ff;
+  --color-rarity-restricted:  #8847ff;
+  --color-rarity-classified:  #d32ce6;
+  --color-rarity-covert:      #eb4b4b;
+  --color-rarity-knife:       #e4ae39;
+
+  /* Kanban status */
+  --color-status-pending: #6b7280;
+  --color-status-active:  #5e98d9;
+  --color-status-lost:    #eb4b4b;
+  --color-status-won:     #5ba24a;
+
+  /* Semantic */
+  --color-success:        #5ba24a;
+  --color-warning:        #e4ae39;
+  --color-danger:         #eb4b4b;
+  --color-info:           #5e98d9;
+
+  /* Typography — aliases wired by layout.tsx via Next.js font variables */
+  --font-display: 'Rajdhani', 'Oswald', sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  /* ↑ fallbacks — layout.tsx overrides these with the loaded Next.js font vars */
+
+  /* Type scale */
+  --text-2xs:  0.625rem;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.375rem;
+  --text-2xl:  1.75rem;
+  --text-3xl:  2.25rem;
+  --text-4xl:  3rem;
+  --text-5xl:  4rem;
+
+  /* Weight */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* Tracking */
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.05em;
+  --tracking-wider:   0.1em;
+  --tracking-widest:  0.2em;
+
+  /* Leading */
+  --leading-tight:   1.1;
+  --leading-snug:    1.3;
+  --leading-base:    1.5;
+  --leading-relaxed: 1.7;
+
+  /* Spacing (4px base) */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  6rem;
+
+  /* Radius — sharp CS aesthetic */
+  --radius-none: 0;
+  --radius-sm:   2px;
+  --radius-md:   4px;
+  --radius-lg:   6px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 24px var(--color-brand-glow);
+
+  /* Motion */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 400ms;
+
+  /* Z-index */
+  --z-base:     1;
+  --z-dropdown: 10;
+  --z-sticky:   20;
+  --z-overlay:  30;
+  --z-modal:    40;
+  --z-toast:    50;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --text-3xl: 3rem;
+    --text-4xl: 4rem;
+    --text-5xl: 5.5rem;
+  }
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hex grid ambient background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+p { margin: 0; }
+button { font-family: inherit; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-text-inverse);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ============================================================
+   CARD HOVER EFFECTS
+   ============================================================ */
+.skin-card-hover {
+  transition: all var(--duration-base) var(--ease-out);
+}
+.skin-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.featured-card {
+  transition: all var(--duration-base) var(--ease-out);
+}
+.featured-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+}
+
+.skin-grid-card {
+  transition: all var(--duration-base) var(--ease-out);
+}
+.skin-grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.solicite-link:hover {
+  background: rgba(207, 106, 50, 0.18) !important;
+  border-color: var(--color-brand-bright) !important;
+  color: var(--color-brand-bright) !important;
+  transform: translateX(3px);
+  box-shadow: 0 0 16px var(--color-brand-glow);
+}
+
+.nav-link:hover {
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border-strong) !important;
+  background: var(--color-bg-raised);
+}
+
+.logout-btn:hover {
+  background: var(--color-brand-bg) !important;
+  border-color: var(--color-brand) !important;
+  color: var(--color-brand) !important;
+  box-shadow: 0 0 12px var(--color-brand-glow);
+}
+
+.nav-vendedores:hover {
+  background: rgba(207, 106, 50, 0.18) !important;
+  border-color: var(--color-brand) !important;
+  color: var(--color-brand-bright) !important;
+  box-shadow: 0 0 12px var(--color-brand-glow);
+}
+
+.submit-cta:not(:disabled):hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 20px var(--color-brand-glow), var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   HERO — two-column layout at 900px+
+   ============================================================ */
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr !important;
+    align-items: start;
+  }
+}
+
+/* ============================================================
+   VITRINE — mobile drag hint
+   ============================================================ */
+.vitrine-hint-mobile {
+  display: none;
+}
+@media (max-width: 639px) {
+  .vitrine-hint-mobile {
+    display: flex;
+  }
+}
+
+/* ============================================================
+   KANBAN — mobile stack
+   ============================================================ */
+@media (max-width: 767px) {
+  .kanban-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ============================================================
+   KANBAN — card CTA hover
+   ============================================================ */
+.kanban-wa-cta:hover {
+  background: rgba(94,152,217,0.15) !important;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   KANBAN — drop zone scroll híbrido
+   ============================================================ */
+.kanban-drop-zone {
+  flex: 1;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 200px;
+}
+
+@media (min-width: 768px) {
+  .kanban-drop-zone {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-default) transparent;
+  }
+}
